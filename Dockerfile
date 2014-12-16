@@ -33,11 +33,11 @@ ENV NEWRELIC_LICENSE false
 ENV NEWRELIC_APP false
 WORKDIR /opt
 RUN \
-    sed -i 's/^# \(.*-backports\s\)/\1/g' /etc/apt/sources.list && \
-    apt-get update -qqy && \
-    apt-get install -qqy wget curl && \
-    wget -O - https://download.newrelic.com/548C16BF.gpg | apt-key add - && \
-    echo "deb http://apt.newrelic.com/debian/ newrelic non-free" > /etc/apt/sources.list.d/newrelic.list && \
+    sed -i 's/^# \(.*-backports\s\)/\1/g' /etc/apt/sources.list; \
+    apt-get update -qqy; \
+    apt-get install -qqy wget curl; \
+    wget -O - https://download.newrelic.com/548C16BF.gpg | apt-key add -; \
+    echo "deb http://apt.newrelic.com/debian/ newrelic non-free" > /etc/apt/sources.list.d/newrelic.list; \
     apt-get update -qqy
 
 RUN \
@@ -56,19 +56,12 @@ RUN \
         newrelic-sysmond \
 	ssmtp
 
-# PHP-FPM
+# PHP-FPM configuration
 ADD build/php.ini /etc/php5/fpm/php.ini
 ADD build/www.conf /etc/php5/fpm/pool.d/www.conf
 ADD build/php-fpm.conf /etc/php5/fpm/php-fpm.conf
-RUN chown -R root:root /etc/php5
 RUN \
-    mkdir /var/log/php5-fpm && \
-    rm /var/log/php5-fpm.log && \
-    touch /var/log/php5-fpm/fpm.log && \
-    touch /var/log/php5-fpm/error.log && \
-    chown -R www-data: /var/log/php5-fpm && \
-    /usr/sbin/update-rc.d -f php5-fpm remove && \
-    echo "manual" > /etc/init/php5-fpm.override && \
+    mkdir /var/log/php5-fpm; \
     php5dismod xdebug
 
 # SSMTP
@@ -77,13 +70,16 @@ RUN \
     chmod 640 /etc/ssmtp/ssmtp.conf && \
     chown root:mail /etc/ssmtp/ssmtp.conf
 
-# SERVICES
-RUN mkdir /etc/service/phpfpm
-ADD build/phpfpm.sh /etc/service/phpfpm/run
-RUN chmod +x /etc/service/phpfpm/run
+# INIT
+ENV NEWRELIC_LICENSE false
+ENV NEWRELIC_APP false
+ADD build/newrelic.sh /etc/my_init.d/10_setup_newrelic.sh
+ADD build/ssmtp.sh /etc/my_init.d/11_setup_ssmtp.sh
+ADD build/env.sh /etc/my_init.d/12_setup_env.sh
 
 VOLUME ["/var/www"]
 EXPOSE 9000
+CMD ["/usr/sbin/php5-fpm", "-c /etc/php5/fpm"]
 # End Installation
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
