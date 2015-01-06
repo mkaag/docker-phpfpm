@@ -73,9 +73,15 @@ RUN \
 # INIT
 ENV NEWRELIC_LICENSE false
 ENV NEWRELIC_APP false
+
 ADD build/newrelic.sh /etc/my_init.d/10_setup_newrelic.sh
 ADD build/ssmtp.sh /etc/my_init.d/11_setup_ssmtp.sh
 ADD build/env.sh /etc/my_init.d/12_setup_env.sh
+
+RUN \
+    chmod +x /etc/my_init.d/10_setup_newrelic.sh; \
+    chmod +x /etc/my_init.d/11_setup_ssmtp.sh; \
+    chmod +x /etc/my_init.d/12_setup_env.sh
 
 VOLUME ["/var/www"]
 EXPOSE 9000
