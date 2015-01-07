@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Function to update the fpm configuration to make the service environment variables available
 function setEnvironmentVariable() {
     if [ -z "$2" ]; then

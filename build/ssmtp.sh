@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 SSMTP_CONFIG=${SSMTP_CONFIG:-false}
 if [ "$SSMTP_CONFIG" == "true" ]; then
