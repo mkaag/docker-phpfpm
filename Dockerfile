@@ -26,8 +26,6 @@ RUN locale-gen en_US.UTF-8
 ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
 
-CMD ["/sbin/my_init"]
-
 # Start Installation
 ENV NEWRELIC_LICENSE false
 ENV NEWRELIC_APP false
@@ -85,6 +83,8 @@ RUN \
 
 VOLUME ["/var/www"]
 EXPOSE 9000
+
+CMD ["/sbin/my_init"]
 CMD ["/usr/sbin/php5-fpm", "-c /etc/php5/fpm"]
 # End Installation
 
