@@ -12,7 +12,7 @@ SSMTP and [NewRelic](https://newrelic.com) have been added and the configuration
 ### Installation
 
 ```bash
-docker build -t mkaag/iphpfpm github.com/mkaag/docker-phpfpm
+docker build -t mkaag/phpfpm github.com/mkaag/docker-phpfpm
 ```
 
 ### Usage
