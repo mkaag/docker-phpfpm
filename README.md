@@ -1,6 +1,8 @@
 docker-phpfpm
 =============
 
+[![Docker Hub](https://img.shields.io/badge/docker-mkaag%2Fphpfpm-008bb8.svg)](https://registry.hub.docker.com/u/mkaag/phpfpm/)
+
 This repository contains the **Dockerfile** and the configuration files to build a Load Balancer based on Nginx for [Docker](https://www.docker.com/).
 SSMTP and [NewRelic](https://newrelic.com) have been added and the configuration is managed by ENV variables.
 
